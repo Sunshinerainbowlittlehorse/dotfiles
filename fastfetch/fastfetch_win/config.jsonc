@@ -1,0 +1,110 @@
+// ╔══════════════════════════════════════════════════════════════════╗
+//  fastfetch 美化预设 · Catppuccin Mocha · Windows 11
+//  路径: %USERPROFILE%/.config/fastfetch/config.jsonc
+//  logo: 用 `fflogo` 切换（列表 / 预览 / -Save 固定 / -Reset 回默认猫）
+//
+//  · braille 类图案（猫 / rei / uwu）依赖字体里的 U+2800 字形：默认 profile 的
+//    Cascadia Mono 原生有；「PowerShell」profile 的 JetBrainsMono Nerd Font 没有，
+//    靠 Windows Terminal 回退到本机 Segoe UI Symbol（braille 256/256）补齐。
+//    万一显示成方框/空心：把 settings.json 里 "face" 写成
+//    "JetBrainsMono Nerd Font, Cascadia Mono"（主字体不变，只补字形），
+//    或换不依赖回退的 logo： fflogo ascii_flag / ff --file ~/.config/fastfetch/ascii_flag.txt
+//  · 手动预览： PowerShell 里直接敲  ff
+//  · 本次启动不自动跑： $env:FASTFETCH_AUTO='0' 后再开新窗口
+//
+//  动手改之前两句：① 标签是手工补空格到 10 字符的，加模块记得补满；
+//  ② disk 故意不写 key —— 一写 key 就把 fastfetch 自动加的盘符 (C:\) 顶掉了。
+// ╚══════════════════════════════════════════════════════════════════╝
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+
+  "logo": {
+    // logo 文件用 `fflogo <名字> -Save` 切换；重新生成这份配置时会自动保留你当前选的那个
+    "type": "file",
+    "source": "%USERPROFILE%/.config/fastfetch/logos/rei2.txt",
+    // 上游作者的原色映射（$1..$9 由 logo.color 自动替换）
+    "color": {
+      "1": "#CDD6F4",
+      "2": "#F9E2AF",   // neofetch 转来的图常用 $2 做高亮（原 c2=bright_yellow）
+      "3": "#F5C2E7",
+      "4": "#F5E0DC",
+      "5": "#F9E2AF",
+      "6": "#A6E3A1",
+      "7": "#94E2D5",
+      "8": "#89DCEB",
+      "9": "#74C7EC"
+    },
+    "padding": { "top": 1, "left": 1, "right": 3 },
+    // auto：终端放不下时自动改成上下排版，宽图不会把右边的框挤没
+    "position": "auto",
+    "printRemaining": true
+  },
+
+  "display": {
+    "separator": " ",
+    "color": {
+      "keys": "#CBA6F7",
+      "title": "#F5C2E7",
+      "output": "#CDD6F4",
+      "separator": "#585B70"
+    },
+    "key": { "type": "both-1" },
+    "size": { "binaryPrefix": "jedec", "ndigits": 1 },
+    "freq": { "ndigits": 2 },
+    "duration": { "abbreviation": true },
+    "percent": {
+      "ndigits": 0,
+      // 三段交通灯色：安全 / 注意 / 危险（multicolor bar 的色区就按这个分）
+      "color": { "green": "#A6E3A1", "yellow": "#F9E2AF", "red": "#F38BA8" }
+    },
+    "bar": {
+      "width": 12,
+      "char": { "elapsed": "\u2588", "total": "\u2591" },
+      "border": null,
+      // elapsed 必须写 "auto"：交给 percent 阈值做分段着色。
+      // 写固定色 = 单一色块；写 "#xxx-#yyy" 渐变串这版不支持（会吐出非法 SGR）
+      "color": { "elapsed": "auto", "total": "#585B70" }
+    },
+    "disableLinewrap": true
+  },
+
+  "modules": [
+    { "type": "title", "format": "{user-name-colored}{at-symbol-colored}{host-name-colored}" },
+    "break",
+
+    { "type": "custom", "key": " ", "format": "┌────────────────────────── Hardware ───────────────────────────┐", "outputColor": "#89B4FA" },
+    { "type": "host",   "key": "Machine   ", "keyColor": "#89B4FA", "format": "{name} ({version})" },
+    { "type": "cpu",    "key": "CPU       ", "keyColor": "#89B4FA", "format": "{name} @ {freq-max}" },
+    { "type": "gpu",    "key": "GPU       ", "keyColor": "#89B4FA", "hideType": "unknown", "format": "{name} [{type}]" },
+    // RAM/Disk 用量条由 usagebar.ps1 自绘：16 格逐格真彩渐变（RAM 蓝紫系 / Disk 青绿系），
+    // 尾部越过阈值向黄/红过渡 + 头格跳状态色 + 百分比数字同步变色。
+    // 渐变计算发生在 shell 进程内（Fastfetch.ps1 点源刷新缓存），这里只 type 缓存文件，
+    // 不再每次渲染孵 pwsh（那 ~230ms 就是之前 700ms 的主要来源）。
+    // 旋钮：usagebar.ps1 的 BAR_W / 渐变锚点 / 阈值 / CACHE_TTL。
+    { "type": "command", "key": " ",
+      "text": "type C:\\Users\\Intel\\.config\\fastfetch\\usagebar.cache.txt 2>nul",
+      "splitLines": true, "useOutput": "stdout" },
+    { "type": "custom", "key": " ", "format": "└───────────────────────────────────────────────────────────────┘", "outputColor": "#89B4FA" },
+
+    "break",
+
+    { "type": "custom", "key": " ", "format": "┌─────────────────────────── System ────────────────────────────┐", "outputColor": "#A6E3A1" },
+    { "type": "os",       "key": "OS        ", "keyColor": "#A6E3A1" },
+    { "type": "kernel",   "key": "Kernel    ", "keyColor": "#A6E3A1", "format": "{release}" },
+    { "type": "shell",    "key": "Shell     ", "keyColor": "#A6E3A1" },
+    { "type": "terminal", "key": "Term      ", "keyColor": "#A6E3A1", "format": "{pretty-name}{?version} ({version}){?}" },
+    { "type": "display",  "key": "Screen    ", "keyColor": "#A6E3A1", "format": "{width}x{height} @ {refresh-rate}Hz" },
+    { "type": "wmtheme",  "key": "Theme     ", "keyColor": "#A6E3A1" },
+    { "type": "custom", "key": " ", "format": "└───────────────────────────────────────────────────────────────┘", "outputColor": "#A6E3A1" },
+
+    "break",
+
+    { "type": "custom", "key": " ", "format": "┌───────────────────────────── Now ─────────────────────────────┐", "outputColor": "#F9E2AF" },
+    { "type": "uptime",   "key": "Uptime    ", "keyColor": "#F9E2AF", "format": "{hours}h {minutes}m" },
+    { "type": "battery",  "key": "Battery   ", "keyColor": "#F9E2AF" },
+    { "type": "datetime", "key": "Clock     ", "keyColor": "#F9E2AF", "format": "{year}-{month-pretty}-{day-pretty} {hour-pretty}:{minute-pretty}" },
+    { "type": "custom", "key": " ", "format": "└───────────────────────────────────────────────────────────────┘", "outputColor": "#F9E2AF" },
+
+    { "type": "colors", "key": " ", "symbol": "circle", "paddingLeft": 3 }
+  ]
+}

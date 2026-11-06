@@ -1,0 +1,20 @@
+$1
+        /ddddddddd\$2  $1lyddyl$2  $1/ddddddddd\
+      /dddddddddss|$2``$1lknnkl$2``$1|ssddddddddd\
+      dddddddddds.$2```````````$1.sddddddddddl
+      ddddddds.$2``````````````````$1.sddddddd
+      ddddds.$2```````````````````````$1.sdddd
+      dddds.$2```````$1.ssddddss.$2````````$1.sddd
+       $2`$1m.$2``````$1.sdddddddddddds.$2``````$1.m$2`
+       ````````$1.sdd$3----..----$1dds.$2````````
+      $1dsm$2`````$1:sd$3--------------$1ds:$2`````$1msd
+      nsd$2`````$1:sdd$3------------$1dds:$2`````$1nsd
+      dsm$2`````$1:sdd.$3----------$1.dds:$2`````$1msd
+       $2````````$1.dddd.$3------$1.dddd.$2````````
+       `$1m.$2``````$1.ddddd.$3--$1.ddddd.$2``````$1.m$2`
+      $1dddds.$2``````$1`.dddddddd.`$2```````$1.sddd
+      ddddds.$2```````````````````````$1.sdddd
+      ddddddds.$2``````````````````$1.sddddddd
+      lddddddddds.$2```````````$1.sddddddddddl
+      \dddddddddss|$2``$1lknnkl$2``$1|ssddddddddd/
+        \ddddddddd/  lyddyl  \ddddddddd/
